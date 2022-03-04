@@ -1,0 +1,495 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "connections_office365_name": {
+            "defaultValue": "office365",
+            "type": "String"
+        },
+        "connections_office365_1_name": {
+            "defaultValue": "office365-1",
+            "type": "String"
+        },
+        "servers_infrasetupserver_name": {
+            "defaultValue": "infrasetupserver19new",
+            "type": "String"
+        },
+        "workflows_infralogicapp_name": {
+            "defaultValue": "infralogicapp",
+            "type": "String"
+        },
+        "connections_azuredatafactory_name": {
+            "defaultValue": "azuredatafactory",
+            "type": "String"
+        },
+        "workflows_infratriggerlogic_name": {
+            "defaultValue": "infratriggerlogic",
+            "type": "String"
+        },
+        "integrationAccounts_LiquidIntegration_externalid": {
+            "defaultValue": "/subscriptions/5df527a2-240d-44fe-a163-2488e30b80fb/resourceGroups/test_env/providers/Microsoft.Logic/integrationAccounts/LiquidIntegration",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Sql/servers",
+            "apiVersion": "2021-08-01-preview",
+            "name": "[parameters('servers_infrasetupserver_name')]",
+            "location": "eastus",
+            "kind": "v12.0",
+            "properties": {
+                "administratorLogin": "infrauser",
+                "administratorLoginPassword": "metro@12",
+                "version": "12.0",
+                "minimalTlsVersion": "1.2",
+                "publicNetworkAccess": "Enabled",
+                "restrictOutboundNetworkAccess": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Web/connections",
+            "apiVersion": "2016-06-01",
+            "name": "[parameters('connections_azuredatafactory_name')]",
+            "location": "eastus",
+            "kind": "V1",
+            "properties": {
+                "displayName": "rohan@techtiq.com.au",
+                "statuses": [
+                    {
+                        "status": "Connected"
+                    }
+                ],
+                "customParameterValues": {},
+                "nonSecretParameterValues": {
+                    "token:TenantId": "57aa8d8c-f774-4243-9200-51a7fcd0e960",
+                    "token:grantType": "code"
+                },
+                "createdTime": "2022-03-02T12:07:43.1522141Z",
+                "changedTime": "2022-03-02T12:07:55.8769966Z",
+                "api": {
+                    "name": "[parameters('connections_azuredatafactory_name')]",
+                    "displayName": "Azure Data Factory",
+                    "description": "Azure Data Factory is a hybrid data integration service that allows you to create, schedule and orchestrate your ETL/ELT workflows at scale wherever your data lives, in cloud or self-hosted network.",
+                    "iconUri": "[concat('https://connectoricons-prod.azureedge.net/releases/v1.0.1515/1.0.1515.2556/', parameters('connections_azuredatafactory_name'), '/icon.png')]",
+                    "brandColor": "#24A9E0",
+                    "id": "[concat('/subscriptions/5df527a2-240d-44fe-a163-2488e30b80fb/providers/Microsoft.Web/locations/eastus/managedApis/', parameters('connections_azuredatafactory_name'))]",
+                    "type": "Microsoft.Web/locations/managedApis"
+                },
+                "testLinks": []
+            }
+        },
+        {
+            "type": "Microsoft.Web/connections",
+            "apiVersion": "2016-06-01",
+            "name": "[parameters('connections_office365_name')]",
+            "location": "northcentralus",
+            "kind": "V1",
+            "properties": {
+                "displayName": "rohan@techtiq.com.au",
+                "statuses": [
+                    {
+                        "status": "Connected"
+                    }
+                ],
+                "customParameterValues": {},
+                "nonSecretParameterValues": {},
+                "createdTime": "2022-03-02T11:51:23.4177919Z",
+                "changedTime": "2022-03-02T11:51:36.3247887Z",
+                "api": {
+                    "name": "[parameters('connections_office365_name')]",
+                    "displayName": "Office 365 Outlook",
+                    "description": "Microsoft Office 365 is a cloud-based service that is designed to help meet your organization's needs for robust security, reliability, and user productivity.",
+                    "iconUri": "[concat('https://connectoricons-prod.azureedge.net/releases/v1.0.1538/1.0.1538.2621/', parameters('connections_office365_name'), '/icon.png')]",
+                    "brandColor": "#0078D4",
+                    "id": "[concat('/subscriptions/5df527a2-240d-44fe-a163-2488e30b80fb/providers/Microsoft.Web/locations/northcentralus/managedApis/', parameters('connections_office365_name'))]",
+                    "type": "Microsoft.Web/locations/managedApis"
+                },
+                "testLinks": [
+                    {
+                        "requestUri": "[concat('https://management.azure.com:443/subscriptions/5df527a2-240d-44fe-a163-2488e30b80fb/resourceGroups/infrasetup/providers/Microsoft.Web/connections/', parameters('connections_office365_name'), '/extensions/proxy/testconnection?api-version=2016-06-01')]",
+                        "method": "get"
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.Web/connections",
+            "apiVersion": "2016-06-01",
+            "name": "[parameters('connections_office365_1_name')]",
+            "location": "eastus",
+            "kind": "V1",
+            "properties": {
+                "displayName": "rohan@techtiq.com.au",
+                "statuses": [
+                    {
+                        "status": "Connected"
+                    }
+                ],
+                "customParameterValues": {},
+                "nonSecretParameterValues": {},
+                "createdTime": "2022-03-02T12:08:43.428181Z",
+                "changedTime": "2022-03-02T12:08:53.0075581Z",
+                "api": {
+                    "name": "office365",
+                    "displayName": "Office 365 Outlook",
+                    "description": "Microsoft Office 365 is a cloud-based service that is designed to help meet your organization's needs for robust security, reliability, and user productivity.",
+                    "iconUri": "https://connectoricons-prod.azureedge.net/releases/v1.0.1538/1.0.1538.2621/office365/icon.png",
+                    "brandColor": "#0078D4",
+                    "id": "/subscriptions/5df527a2-240d-44fe-a163-2488e30b80fb/providers/Microsoft.Web/locations/eastus/managedApis/office365",
+                    "type": "Microsoft.Web/locations/managedApis"
+                },
+                "testLinks": [
+                    {
+                        "requestUri": "[concat('https://management.azure.com:443/subscriptions/5df527a2-240d-44fe-a163-2488e30b80fb/resourceGroups/infrasetup/providers/Microsoft.Web/connections/', parameters('connections_office365_1_name'), '/extensions/proxy/testconnection?api-version=2016-06-01')]",
+                        "method": "get"
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.Logic/workflows",
+            "apiVersion": "2017-07-01",
+            "name": "[parameters('workflows_infralogicapp_name')]",
+            "location": "northcentralus",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/connections', parameters('connections_office365_name'))]"
+            ],
+            "properties": {
+                "state": "Enabled",
+                "integrationAccount": {
+                    "id": "[parameters('integrationAccounts_LiquidIntegration_externalid')]"
+                },
+                "definition": {
+                    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {
+                        "$connections": {
+                            "defaultValue": {},
+                            "type": "Object"
+                        }
+                    },
+                    "triggers": {
+                        "manual": {
+                            "type": "Request",
+                            "kind": "Http",
+                            "inputs": {
+                                "schema": {
+                                    "items": {
+                                        "properties": {
+                                            "eid": {
+                                                "type": "integer"
+                                            },
+                                            "etimestamp": {
+                                                "type": "string"
+                                            },
+                                            "fname": {
+                                                "type": "string"
+                                            },
+                                            "lname": {
+                                                "type": "string"
+                                            },
+                                            "salary": {
+                                                "type": "integer"
+                                            },
+                                            "stimestamp": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "required": [
+                                            "eid",
+                                            "fname",
+                                            "lname",
+                                            "etimestamp",
+                                            "salary",
+                                            "stimestamp"
+                                        ],
+                                        "type": "object"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        }
+                    },
+                    "actions": {
+                        "Catch": {
+                            "actions": {
+                                "Send_an_email_(V2)_2": {
+                                    "runAfter": {},
+                                    "type": "ApiConnection",
+                                    "inputs": {
+                                        "body": {
+                                            "Body": "<p>ERROR LOGIC APP</p>",
+                                            "Subject": "ERROR",
+                                            "To": "shivam.giri@mandelbulbtech.com;nirban.biswas@mandelbulbtech.com"
+                                        },
+                                        "host": {
+                                            "connection": {
+                                                "name": "@parameters('$connections')['office365']['connectionId']"
+                                            }
+                                        },
+                                        "method": "post",
+                                        "path": "/v2/Mail"
+                                    }
+                                }
+                            },
+                            "runAfter": {
+                                "Try": [
+                                    "TimedOut",
+                                    "Skipped",
+                                    "Failed"
+                                ]
+                            },
+                            "type": "Scope"
+                        },
+                        "Try": {
+                            "actions": {
+                                "Send_an_email_(V2)": {
+                                    "runAfter": {
+                                        "Transform_JSON_to_JSON": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "type": "ApiConnection",
+                                    "inputs": {
+                                        "body": {
+                                            "Body": "<p>@{body('Transform_JSON_to_JSON')}</p>",
+                                            "Subject": "Logic App Email",
+                                            "To": "nirban.biswas@mandelbulbtech.com;shivam.giri@mandelbulbtech.com"
+                                        },
+                                        "host": {
+                                            "connection": {
+                                                "name": "@parameters('$connections')['office365']['connectionId']"
+                                            }
+                                        },
+                                        "method": "post",
+                                        "path": "/v2/Mail"
+                                    }
+                                },
+                                "Transform_JSON_to_JSON": {
+                                    "runAfter": {},
+                                    "type": "Liquid",
+                                    "kind": "JsonToJson",
+                                    "inputs": {
+                                        "content": "@triggerBody()",
+                                        "integrationAccount": {
+                                            "map": {
+                                                "name": "infraliquid"
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "runAfter": {},
+                            "type": "Scope"
+                        }
+                    },
+                    "outputs": {}
+                },
+                "parameters": {
+                    "$connections": {
+                        "value": {
+                            "office365": {
+                                "connectionId": "[resourceId('Microsoft.Web/connections', parameters('connections_office365_name'))]",
+                                "connectionName": "office365",
+                                "id": "/subscriptions/5df527a2-240d-44fe-a163-2488e30b80fb/providers/Microsoft.Web/locations/northcentralus/managedApis/office365"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases",
+            "apiVersion": "2021-08-01-preview",
+            "name": "[concat(parameters('servers_infrasetupserver_name'), '/infrasetupdb')]",
+            "location": "eastus",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_infrasetupserver_name'))]"
+            ],
+            "sku": {
+                "name": "Basic",
+                "tier": "Basic",
+                "capacity": 5
+            },
+            "kind": "v12.0,user",
+            "properties": {
+                "collation": "SQL_Latin1_General_CP1_CI_AS",
+                "maxSizeBytes": 2147483648,
+                "catalogCollation": "SQL_Latin1_General_CP1_CI_AS",
+                "zoneRedundant": false,
+                "readScale": "Disabled",
+                "requestedBackupStorageRedundancy": "Local",
+                "maintenanceConfigurationId": "/subscriptions/5df527a2-240d-44fe-a163-2488e30b80fb/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_Default",
+                "isLedgerOn": false
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/encryptionProtector",
+            "apiVersion": "2021-08-01-preview",
+            "name": "[concat(parameters('servers_infrasetupserver_name'), '/current')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_infrasetupserver_name'))]"
+            ],
+            "kind": "servicemanaged",
+            "properties": {
+                "serverKeyName": "ServiceManaged",
+                "serverKeyType": "ServiceManaged",
+                "autoRotationEnabled": false
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2021-08-01-preview",
+            "name": "[concat(parameters('servers_infrasetupserver_name'), '/AllowAllWindowsAzureIps')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_infrasetupserver_name'))]"
+            ],
+            "properties": {
+                "startIpAddress": "0.0.0.0",
+                "endIpAddress": "0.0.0.0"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2021-08-01-preview",
+            "name": "[concat(parameters('servers_infrasetupserver_name'), '/query-editor-2f5aaf')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_infrasetupserver_name'))]"
+            ],
+            "properties": {
+                "startIpAddress": "157.35.63.167",
+                "endIpAddress": "157.35.63.167"
+            }
+        },
+        {
+            "type": "Microsoft.Logic/workflows",
+            "apiVersion": "2017-07-01",
+            "name": "[parameters('workflows_infratriggerlogic_name')]",
+            "location": "eastus",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/connections', parameters('connections_azuredatafactory_name'))]",
+                "[resourceId('Microsoft.Web/connections', parameters('connections_office365_1_name'))]"
+            ],
+            "properties": {
+                "state": "Enabled",
+                "definition": {
+                    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {
+                        "$connections": {
+                            "defaultValue": {},
+                            "type": "Object"
+                        }
+                    },
+                    "triggers": {
+                        "manual": {
+                            "type": "Request",
+                            "kind": "Http",
+                            "inputs": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "actions": {
+                        "Catch": {
+                            "actions": {
+                                "Send_an_email_(V2)": {
+                                    "runAfter": {},
+                                    "type": "ApiConnection",
+                                    "inputs": {
+                                        "body": {
+                                            "Body": "<p>ERROR Calling ADF</p>",
+                                            "Subject": "ERROR Calling ADF",
+                                            "To": "shivam.giri@mandelbulbtech.com;nirban.biswas@mandelbulbtech.com"
+                                        },
+                                        "host": {
+                                            "connection": {
+                                                "name": "@parameters('$connections')['office365']['connectionId']"
+                                            }
+                                        },
+                                        "method": "post",
+                                        "path": "/v2/Mail"
+                                    }
+                                }
+                            },
+                            "runAfter": {
+                                "Try": [
+                                    "TimedOut",
+                                    "Skipped",
+                                    "Failed"
+                                ]
+                            },
+                            "type": "Scope"
+                        },
+                        "Try": {
+                            "actions": {
+                                "Create_a_pipeline_run": {
+                                    "runAfter": {},
+                                    "type": "ApiConnection",
+                                    "inputs": {
+                                        "host": {
+                                            "connection": {
+                                                "name": "@parameters('$connections')['azuredatafactory']['connectionId']"
+                                            }
+                                        },
+                                        "method": "post",
+                                        "path": "/subscriptions/@{encodeURIComponent('5df527a2-240d-44fe-a163-2488e30b80fb')}/resourcegroups/@{encodeURIComponent('infrasetup')}/providers/Microsoft.DataFactory/factories/@{encodeURIComponent('infraadf')}/pipelines/@{encodeURIComponent('call logic app')}/CreateRun",
+                                        "queries": {
+                                            "x-ms-api-version": "2017-09-01-preview"
+                                        }
+                                    }
+                                }
+                            },
+                            "runAfter": {},
+                            "type": "Scope"
+                        }
+                    },
+                    "outputs": {}
+                },
+                "parameters": {
+                    "$connections": {
+                        "value": {
+                            "azuredatafactory": {
+                                "connectionId": "[resourceId('Microsoft.Web/connections', parameters('connections_azuredatafactory_name'))]",
+                                "connectionName": "azuredatafactory",
+                                "id": "/subscriptions/5df527a2-240d-44fe-a163-2488e30b80fb/providers/Microsoft.Web/locations/eastus/managedApis/azuredatafactory"
+                            },
+                            "office365": {
+                                "connectionId": "[resourceId('Microsoft.Web/connections', parameters('connections_office365_1_name'))]",
+                                "connectionName": "office365-1",
+                                "id": "/subscriptions/5df527a2-240d-44fe-a163-2488e30b80fb/providers/Microsoft.Web/locations/eastus/managedApis/office365"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_infrasetupserver_name'), '/infrasetupdb/ForceLastGoodPlan')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_infrasetupserver_name'), 'infrasetupdb')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_infrasetupserver_name'))]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/transparentDataEncryption",
+            "apiVersion": "2021-08-01-preview",
+            "name": "[concat(parameters('servers_infrasetupserver_name'), '/infrasetupdb/Current')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_infrasetupserver_name'), 'infrasetupdb')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_infrasetupserver_name'))]"
+            ],
+            "properties": {
+                "state": "Enabled"
+            }
+        }
+        
+    ]
+}

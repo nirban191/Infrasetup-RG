@@ -1,0 +1,27 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "connections_office365_name": {
+            "value": "office365"
+        },
+        "connections_office365_1_name": {
+            "value": "office365-1"
+        },
+        "servers_infrasetupserver_name": {
+            "value": "infrasetupserver19new"
+        },
+        "workflows_infralogicapp_name": {
+            "value": "infralogicapp"
+        },
+        "connections_azuredatafactory_name": {
+            "value": "azuredatafactory"
+        },
+        "workflows_infratriggerlogic_name": {
+            "value": "infratriggerlogic"
+        },
+        "integrationAccounts_LiquidIntegration_externalid": {
+            "value": "/subscriptions/5df527a2-240d-44fe-a163-2488e30b80fb/resourceGroups/test_env/providers/Microsoft.Logic/integrationAccounts/LiquidIntegration"
+        }
+    }
+}
